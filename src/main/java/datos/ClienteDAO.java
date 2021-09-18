@@ -25,17 +25,20 @@ public class ClienteDAO {
     private static final String SQL_UPDATE = "UPDATE cliente SET nombres = ?, apellidos =?, email =?, telefono =?, saldo=? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM cliente WHERE id = ?";
 
+    private Connection conn = null;
+    private PreparedStatement ps = null;
+    private ResultSet rs = null;
+
     public List<Cliente> listar() {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+
         Cliente cliente = null;
         List<Cliente> clientes = new ArrayList<>();
 
-        try {
-            conn = Conexion.getConnection();
-            ps = conn.prepareStatement(SQL_SELECT);
-            rs = ps.executeQuery();
+        try{
+            this.conn = Conexion.getConnection();
+            this.conn = Conexion.getConnection();
+            this.ps = conn.prepareStatement(SQL_SELECT);
+            this.rs = ps.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -51,17 +54,12 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } finally {
-            Conexion.close(conn);
-            Conexion.close(ps);
-            Conexion.close(rs);
+            this.close();
         }
         return clientes;
     }
 
     public Cliente encontrar(Cliente cliente) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         try {
             conn = Conexion.getConnection();
             ps = conn.prepareStatement(SQL_SELECT_BY_ID);
@@ -85,16 +83,12 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } finally {
-            Conexion.close(conn);
-            Conexion.close(ps);
-            Conexion.close(rs);
+            this.close();
         }
         return cliente;
     }
 
     public int insertar(Cliente cliente) {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int rows = 0;
         try {
             conn = Conexion.getConnection();
@@ -110,15 +104,12 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } finally {
-            Conexion.close(conn);
-            Conexion.close(ps);
+            this.close();
         }
         return rows;
     }
 
     public int actualizar(Cliente cliente) {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int rows = 0;
         try {
             conn = Conexion.getConnection();
@@ -135,15 +126,12 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } finally {
-            Conexion.close(conn);
-            Conexion.close(ps);
+            close();
         }
         return rows;
     }
 
     public int delete(Cliente cliente) {
-        Connection conn = null;
-        PreparedStatement ps = null;
         int registros = 0;
         try {
             conn = Conexion.getConnection();
@@ -155,16 +143,16 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } finally {
-            Conexion.close(conn);
-            Conexion.close(ps);
+            close();
         }
         return registros;
     }
 
-//    private void close() {
-//        Conexion.close(conn);
+    private void close() {
+        Conexion.close(conn);
 //        Conexion.close(ps);
-//        Conexion.close(rs);
-//    }
-
+//        if (this.rs != null) {
+//            Conexion.close(rs);
+//        }
+    }
 }

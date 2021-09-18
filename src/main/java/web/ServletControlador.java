@@ -53,8 +53,7 @@ public class ServletControlador extends HttpServlet {
         }
     }
 
-    private void accionDefault(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void accionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         List<Cliente> clientes = new ClienteDAO().listar();
         System.out.println("clientes = " + clientes);
@@ -79,8 +78,14 @@ public class ServletControlador extends HttpServlet {
         return saldoTotal;
     }
 
-    private void editarCliente(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    /**
+     * Muestra la pagina con los datos del cliente para poder editarlo
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void editarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // recuperar el id
         int id = Integer.parseInt(request.getParameter("id"));
@@ -91,6 +96,13 @@ public class ServletControlador extends HttpServlet {
         request.getRequestDispatcher(jspEditar).forward(request, response);
     }
 
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void eliminarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -138,6 +150,13 @@ public class ServletControlador extends HttpServlet {
 
     }
 
+    /**
+     * Recupera datos del formulario, y registra en la bd
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void insertarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -153,7 +172,7 @@ public class ServletControlador extends HttpServlet {
             saldo = Double.parseDouble(saldoString);
         }
 
-        // creamos el objeto del cliente (modelo)
+        // creamos el objeto cliente (modelo)
         Cliente cliente = new Cliente(nombres, apellidos, email, telefono, saldo);
 
         // insertamos el nuevo objeto en la base de datos
@@ -164,6 +183,13 @@ public class ServletControlador extends HttpServlet {
         this.accionDefault(request, response);
     }
 
+    /**
+     * Recupera los datos del formulario de edición y actualiza al cliente 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void modificarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
